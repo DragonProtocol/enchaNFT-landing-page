@@ -1,7 +1,6 @@
 import React from 'react'
 import { useParams } from 'react-router-dom'
 import styled from 'styled-components'
-// import ReactJson from 'react-json-view'
 
 import NFTHandler from '../components/NFTHandler'
 
@@ -49,6 +48,7 @@ const Info: React.FC = () => {
               {metadata && (
                 <NFTHandler
                   metadata={metadata}
+                  externalMetadata={info?.externalMetadata}
                   injectTree={{
                     data: injectTree,
                     loading: injectTreeLoading,
@@ -58,7 +58,7 @@ const Info: React.FC = () => {
               )}
               <NFTShower
                 data={{
-                  jsonData: info?.externalMetadata,
+                  externalMetadata: info?.externalMetadata,
                   injectTree: {
                     data: injectTree,
                     loading: injectTreeLoading,

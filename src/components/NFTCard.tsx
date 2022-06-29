@@ -1,38 +1,43 @@
 /*
  * @Author: shixuewen
  * @Date: 2022-03-11 18:48:03
- * @LastEditTime: 2022-06-24 18:46:58
+ * @LastEditTime: 2022-06-29 09:48:03
  * @LastEditors: shixuewen friendlysxw@163.com
  * @Description: nft卡片视图组件
  * @FilePath: \synft-app\src\components\NFTCard.tsx
  */
 import React, { useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
-import { MEDIA_BREAK_POINTS } from '../utils/constants'
+import { MEDIA_BREAK_POINTS, VIEW_LAMPORTS_DECIMAL } from '../utils/constants'
 import { NftDataItem } from './NFTList'
 import SolanaIcon from './icons/solana.png'
+import { lamportsToSol } from '../utils'
 interface Props {
   data: NftDataItem
 }
 const NFTCard: React.FC<Props> = ({ data }: Props) => {
+  console.log({ data })
+  const { externalMetadata, injectSolAmount = 0 } = data
   return (
     <NFTCardWrapper>
       <div className="img-box">
         {/* {data.hasCopied && <span className="tag tag-synthesized">Synthesized</span>}
         {data.hasInjected && <span className="tag tag-enchanted">Enchanted</span>} */}
-        <img src={data.image} className="img" />
+        <img alt="" src={data.image} className="img" />
       </div>
       <EnchaNFTedNameBox>
         <EnchaNFTedName>{data.name}</EnchaNFTedName>
-        {/* <EnchaNFTedProjectName>TODO: project name</EnchaNFTedProjectName> */}
+        <EnchaNFTedProjectName>
+          {externalMetadata?.collection?.name || externalMetadata?.collection?.family || 'unknown collection'}
+        </EnchaNFTedProjectName>
       </EnchaNFTedNameBox>
-      {/* <EnchaNFTedAmountBox>
+      <EnchaNFTedAmountBox>
         <EnchaNFTedAmountTitle>EnchaNFTed</EnchaNFTedAmountTitle>
         <EnchaNFTedAmount>
           <img src={SolanaIcon} alt="" />
-          <span>TODOSOL</span>
+          <span>{lamportsToSol(injectSolAmount).toFixed(VIEW_LAMPORTS_DECIMAL)}SOL</span>
         </EnchaNFTedAmount>
-      </EnchaNFTedAmountBox> */}
+      </EnchaNFTedAmountBox>
     </NFTCardWrapper>
   )
 }
@@ -42,6 +47,8 @@ const NFTCardWrapper = styled.div`
   height: 100%;
   border: 2px solid #222222;
   box-sizing: border-box;
+  background: #fff;
+  box-shadow: 0px 4px 0px rgba(0, 0, 0, 0.25);
   .img-box {
     width: 100%;
     height: 250px;

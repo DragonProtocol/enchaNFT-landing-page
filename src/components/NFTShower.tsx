@@ -7,8 +7,9 @@ import expandMoreIcon from './icons/expandMore.svg'
 import { CursorPointerUpCss } from '../GlobalStyle'
 import NFTTree from './NFTTree'
 import { Node } from '../synft'
+import { ExternalMetadata } from '../synft/types'
 interface NFTShowerData {
-  jsonData: any
+  externalMetadata?: ExternalMetadata
   injectTree: {
     data: Node
     loading: boolean
@@ -23,7 +24,7 @@ const ExpandMoreIcon = () => (
   </>
 )
 export default function NFTShower({ data }: Props) {
-  const { injectTree, jsonData: info } = data
+  const { injectTree, externalMetadata: info } = data
   const [currentAccordion, setCurrentAccordion] = useState('enchantment')
   const handleAccordionChange = (accordion: string, isExpanded: boolean) => {
     if (isExpanded) {
@@ -62,8 +63,7 @@ export default function NFTShower({ data }: Props) {
             onChange={(event, isExpanded) => handleAccordionChange('description', isExpanded)}
           >
             <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel1a-content" className="info-title">
-              about
-              {/* TODO project name */}
+              about {info?.collection?.name || info?.collection?.family || ''}
             </AccordionSummary>
             <AccordionDetails className="info-content">{info.description}</AccordionDetails>
           </Accordion>
@@ -121,6 +121,7 @@ const NFTShowerWrapper = styled.div`
       margin-bottom: 12px;
       background: #ffffff;
       border: 2px solid #222222;
+      border-radius: none;
     }
     .info-title {
       /* background: #f0f0f0; */
@@ -129,7 +130,7 @@ const NFTShowerWrapper = styled.div`
       text-transform: capitalize;
       ${CursorPointerUpCss}
       font-size: 16px;
-      line-height: 16px;
+      line-height: 24px;
     }
     .info-content {
       background: #f8f8f8;
